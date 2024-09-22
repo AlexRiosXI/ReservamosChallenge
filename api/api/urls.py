@@ -16,7 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from weather import views as WeatherViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("api/health", WeatherViews.WeatherAPIHealthView.as_view(), name="weather-api-health"),
 ]

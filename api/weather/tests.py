@@ -1,8 +1,11 @@
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from rest_framework.response import Response
+from requests import Response as RequestsResponse
+
+import json
 
 
 from weather.fetch.api_reservamos import fetch_destinations
@@ -25,21 +28,27 @@ class WeatherTestCase(TestCase):
             "city_slug": "monterrey",
             "weekly_forecast": []
         }]
-        mock_get.return_value = Response(mocked_data, status=status.HTTP_200_OK)
+        mock_get.return_value = Response(mocked_data, status=201)
 
         response = self.client.get(WEATHER_API)
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, 201)
         self.assertEqual(response.json(), mocked_data)
 
 
-    @patch("weather.fetch.api_reservamos.fetch_destinations")
-    def test_reservamos_destinations_api_fetch(self, mock_fetch):
-        mock_fetch.return_value = [{
+    @patch("weather.fetch.api_reservamos.requests.get")
+    def test_reservamos_destinations_api_fetch(self, mock_get):
+        mocked_data = [{
             "slug": "monterrey",
             "city_slug": "monterrey",
         }]
+        mock_response = MagicMock()
+        mock_response.status_code = status.HTTP_201_CREATED
+        mock_response.json.return_value = mocked_data
+        mock_get.return_value = mock_response
+
         response = fetch_destinations()
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.json(), mock_fetch.return_value)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.json(), mocked_data)
         

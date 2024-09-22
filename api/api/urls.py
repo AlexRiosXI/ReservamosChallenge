@@ -21,4 +21,5 @@ from weather import views as WeatherViews
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/health", WeatherViews.WeatherAPIHealthView.as_view(), name="weather-api-health"),
+    path("api/weather", WeatherViews.WeatherAPIView.as_view(), name="weather-api"),
 ]

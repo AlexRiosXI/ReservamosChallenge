@@ -10,7 +10,9 @@ from utils.pagination import get_total_pages, paginate_list
 
 def fetch_destinations(q, page, per_page, show_all):
     api_uri = os.environ.get("RESERVAMOS_API_URI")
-    url = f"{api_uri}?q={q}"
+    if not api_uri:
+        raise Exception("RESERVAMOS_API_URI not set")
+    url = f"{api_uri}/places?q={q}"
     response = requests.get(url)
     if response.status_code == 404:
         return response

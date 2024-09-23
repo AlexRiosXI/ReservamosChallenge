@@ -25,8 +25,10 @@ class WeatherAPIView(APIView):
                 return Response({"status": "per_page error", "message": serializer.errors["per_page"][0]}, status=status.HTTP_400_BAD_REQUEST)
             if "show_all" in serializer.errors:
                 return Response({"status": "show_all error", "message": serializer.errors["show_all"][0]}, status=status.HTTP_400_BAD_REQUEST)
-            
-        destinaions = fetch_forecast(serializer.data["q"], serializer.data["page"], serializer.data["per_page"], serializer.data["show_all"])
+        try:
+            destinaions = fetch_forecast(serializer.data["q"], serializer.data["page"], serializer.data["per_page"], serializer.data["show_all"])
+        except Exception as e:
+            return Response({"status": "error", "message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         if len(destinaions) == 0:
             return Response({"status": "not found", "message": "Destination not found"}, status=status.HTTP_404_NOT_FOUND)
     

@@ -15,9 +15,14 @@ load_dotenv()
 hour_filter = [int(x) for x in os.getenv("WEATHER_HOUR_FILTER").split(",")] if os.getenv("WEATHER_HOUR_FILTER") else [15]
 
 def fetch_weather(lat,long,units="metric"):
-    api_uri = os.environ.get("OPENWEATHER_AP2I_URI")
+    api_uri = os.environ.get("OPEN_WEATHER_API_URI")
+    if not api_uri:
+        raise Exception("OPEN_WEATHER_API_URI not set")
+    api_key = os.getenv("OPEN_WEATHER_API_KEY")
+    if not api_key:
+        raise Exception("OPEN_WEATHER_API_KEY not set")
     headers = { 'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"} # This is chrome, you can set whatever browser you like
-    url = f"{api_uri}?lat={lat}&lon={long}&units={units}&appid={os.getenv('OPEN_WEATHER_API_KEY')}"
+    url = f"{api_uri}?lat={lat}&lon={long}&units={units}&appid={api_key}"
     response = httpx.get(url, headers=headers)
     print("fetched")
     if response.status_code == 200:

@@ -3,8 +3,10 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from weather.serializers import WeatherRequestSerializer
-
 from weather.fetch.api_forecast import fetch_forecast
+
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 # Create your views here.
 class WeatherAPIHealthView(APIView):
@@ -13,9 +15,17 @@ class WeatherAPIHealthView(APIView):
     
 
 class WeatherAPIView(APIView):
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter('q', openapi.IN_QUERY, description="Destination query", type=openapi.TYPE_STRING, required=True),
+            openapi.Parameter('page', openapi.IN_QUERY, description="Page number", type=openapi.TYPE_INTEGER, required=False, default=1),
+            openapi.Parameter('per_page', openapi.IN_QUERY, description="Number of results per page", type=openapi.TYPE_INTEGER, required=False, default=10),
+            openapi.Parameter('show_all', openapi.IN_QUERY, description="Show all results", type=openapi.TYPE_BOOLEAN, required=False, default=False)
+        ],
+        responses={200: 'Success'}
+    )
     def get(self, request):
         serializer = WeatherRequestSerializer(data=request.GET)
-        
         if not serializer.is_valid():
             if "q" in serializer.errors:
                 return Response({"status": "destination error", "message": serializer.errors["q"][0]}, status=status.HTTP_400_BAD_REQUEST)

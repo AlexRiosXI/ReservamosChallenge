@@ -5,30 +5,27 @@ import json
 from collections import defaultdict
 
 from requests import Response as RequestsResponse
+import httpx 
+
+from dotenv import load_dotenv
+load_dotenv()
 
 
 # Criteria for filtering weather data by hour
 hour_filter = [int(x) for x in os.getenv("WEATHER_HOUR_FILTER").split(",")] if os.getenv("WEATHER_HOUR_FILTER") else [15]
 
-# Adding json example for preventing over-fetching api (MIGHT BE DELETED AFTER DEVELOPMENT)
-with open("examples/open-weather-api-response.json") as f:
-    data = json.load(f)
-
-def get_fake_response():
-    response = RequestsResponse()
-    response.status_code = 200
-    response._content = json.dumps(data).encode()
-    weather = clean_weather_data(response.json())
-    response._content = json.dumps(weather).encode()
-    
-    return response
-
-
 def fetch_weather(lat,long,units="metric"):
-    return get_fake_response()
-    api_uri = os.environ.get("OPEN_WEATHER_API_URI")
-    url = f"{api_uri}?q='mont'"
-    response = requests.get(url)
+    api_uri = os.environ.get("OPENWEATHER_AP2I_URI")
+    headers = { 'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"} # This is chrome, you can set whatever browser you like
+    url = f"{api_uri}?lat={lat}&lon={long}&units={units}&appid={os.getenv('OPEN_WEATHER_API_KEY')}"
+    response = httpx.get(url, headers=headers)
+    print("fetched")
+    if response.status_code == 200:
+        response = clean_weather_data(response.json())
+    elif response.status_code == 404:
+        response = []
+    else:
+        response = []
     return response
 
 

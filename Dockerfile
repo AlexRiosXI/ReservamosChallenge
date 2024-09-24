@@ -4,6 +4,7 @@ RUN adduser api
 
 COPY /api /app
 COPY requirements.txt /tmp/requirements.txt
+COPY .env /app/.env
 RUN chown -R api:api /app /tmp/requirements.txt
 
 USER api

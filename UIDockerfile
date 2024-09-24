@@ -1,0 +1,9 @@
+from node:18-alpine
+
+COPY /ui-api-demo /app
+WORKDIR /app
+
+RUN npm install
+
+CMD ["npm", "run", "dev" , "--", "--host"]
+

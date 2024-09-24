@@ -16,5 +16,5 @@ RUN pip install --upgrade pip && \
     rm -rf /tmp/requirements.txt
 
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:9000"]
 

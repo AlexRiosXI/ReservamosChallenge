@@ -40,7 +40,9 @@ export default function WeatherForecast() {
     setLoading(true)
     let url = `${import.meta.env.VITE_API_URI}/api/weather?q=${params.q}&page=${params.page}&per_page=${params.per_page}&show_all=${params.show_all}`
     try {
-      const response = await axios.get(url)
+      const response = await axios.get(url
+     
+      )
       setLoading(false)
       setForecast(response.data.data)
     } catch (error) {

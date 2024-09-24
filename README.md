@@ -137,8 +137,8 @@ You will need to have [Docker](https://www.docker.com/) and [Docker Compose](htt
 
 | Variable Name       | Description                                  | Default Value                                         |
 |---------------------|----------------------------------------------|-------------------------------------------------------|
-| RESERVAMOS_API_URI  | URI to Reservamos API                        | https://api.reservamos.com/v1/places                  |
-| OPEN_WEATHER_API_URI| URI to OpenWeatherMap API                    | https://api.openweathermap.org/data/2.5/onecall       |
+| RESERVAMOS_API_URI  | URI to Reservamos API                        | https://search.reservamos.mx/api/v2             |
+| OPEN_WEATHER_API_URI| URI to OpenWeatherMap API                    | https://api.openweathermap.org/data/2.5/forecast       |
 | OPEN_WEATHER_API_KEY| OpenWeatherMap API Key                       | Free Subscription API Key                             |
 | WEATHER_HOUR_FILTER         | Hours to fetch weather data (comma separated) enum: 3,6,9,12,15,18,21 | 15                                     |
 

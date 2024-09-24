@@ -18,4 +18,4 @@ services:
       context: .
       dockerfile: UIDockerfile
     ports:
-      - "9001:5173"
+      - "9001:9001"
